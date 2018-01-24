@@ -1,0 +1,29 @@
+{
+  "name": "common",
+  "version": "1.0.0",
+  "description": "",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "fs-extra": "^2.0.0",
+    "prominence": "^0.2.0",
+    "request": "^2.83.0"
+  },
+  "devDependencies": {
+    "ava": "^0.24.0"
+  },
+  "scripts": {
+    "test": "ava --verbose"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yksnyh/utility.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "engines": {
+    "node": ">= 7.6.0",
+    "npm": ">= 4.0.5"
+  }
+}
