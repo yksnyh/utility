@@ -3,7 +3,7 @@ const fse = require('fs-extra');
 const path = require('path');
 const crypto = require('crypto');
 const os = require('os');
-const prominence = require('prominence');
+const { promisify } = require('util');
 
 const CommonUtil = require('./commonutil');
 
@@ -20,7 +20,7 @@ class FileUtil {
 
     static async isExistFile(path) {
         try {
-            await prominence(fs, 'stat', [path]);
+            await promisify(fs.stat)(path);
             return true
         } catch (err) {
             if (err.code === 'ENOENT') return false
@@ -29,7 +29,7 @@ class FileUtil {
 
     static async fileStat(path) {
         try {
-            const st = await prominence(fs, 'stat', [path]);
+            const st = await promisify(fs.stat)(path);
             return st;
         } catch (err) {
             return null;
@@ -59,7 +59,7 @@ class FileUtil {
             throw new Error(`${parentDirPath} is not directory`);
         }
         try {
-            const files = await prominence(fs, 'readdir', [parentDirPath]);
+            const files = await promisify(fs.readdir)(parentDirPath);
             return files.filter((file) => { return filterFnc(path.join(parentDirPath, file)); })
         } catch (err) {
             throw err;
@@ -83,7 +83,7 @@ class FileUtil {
             throw new Error(`${parentDirPath} is not directory`);
         }
         try {
-            const files = await prominence(fs, 'readdir', [parentDirPath]);
+            const files = await promisify(fs.readdir)(parentDirPath);
             const filepathlist = files.map((file) => { return path.join(parentDirPath, file) });
             const filters = await CommonUtil.concurrentExecAsyncFunc(asyncfilterFnc, filepathlist);
             return files.filter((file, idx) => { return filters[idx]; });
@@ -145,7 +145,7 @@ class FileUtil {
     static async readFile(filepath, encoding) {
         const _encoding = encoding || 'utf-8';
         return (await FileUtil.isFile(filepath)) ?
-            await prominence(fs, 'readFile', [filepath, { encoding: _encoding }]) : null;
+            await promisify(fs.readFile)(filepath, { encoding: _encoding }) : null;
     }
 
     static readlines(filepath, encode) {

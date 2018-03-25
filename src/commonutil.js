@@ -3,7 +3,6 @@ const fse = require('fs-extra');
 const path = require('path');
 const crypto = require('crypto');
 const os = require('os');
-const prominence = require('prominence');
 
 class CommonUtil {
 
