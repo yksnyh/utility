@@ -148,6 +148,12 @@ class FileUtil {
             await promisify(fs.readFile)(filepath, { encoding: _encoding }) : null;
     }
 
+    static async writeFile(filepath, data, encoding) {
+        const _encoding = encoding || 'utf-8';
+        const writeData = (CommonUtil.is('String', data)) ? data : JSON.stringify(data);
+        await promisify(fs.writeFile)(filepath, writeData, { encoding: _encoding });
+    }
+
     static readlines(filepath, encode) {
         return new Promise((resolve, reject) => {
             const enc = encode || 'utf-8';
