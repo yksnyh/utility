@@ -210,6 +210,22 @@ test('readFile', async t => {
     t.is(await FileUtil.readFile(testfile.file1_3, 'utf16le'), 'テスト1_3')
 })
 
+test('getAllfiles', async t => {
+    const assert_allfilelist1 = ['file1.txt', 'file2.txt', 'file3.txt', 'dir1/file1_1.txt', 'dir1/file1_2.txt', 'dir1/file1_3.txt']
+        .map((file) => { return path.join(testbasedir, file) });
+    const assert_allfilelist2 = ['dir1/file1_1.txt', 'dir1/file1_2.txt', 'dir1/file1_3.txt', 'file1.txt', 'file2.txt', 'file3.txt']
+        .map((file) => { return path.join(testbasedir, file) });
+    const assert_allfilelist3 = ['file3.txt', 'file2.txt', 'file1.txt', 'dir1/file1_3.txt', 'dir1/file1_2.txt', 'dir1/file1_1.txt']
+        .map((file) => { return path.join(testbasedir, file) });
+    const allfilelist1 = await FileUtil.getAllfiles(testbasedir);
+    const allfilelist2 = await FileUtil.getAllfiles(testbasedir, 'asc');
+    const allfilelist3 = await FileUtil.getAllfiles(testbasedir, 'desc');
+
+    t.deepEqual(allfilelist1.sort(), assert_allfilelist1.sort());
+    t.deepEqual(allfilelist2.sort(), assert_allfilelist2.sort());
+    t.deepEqual(allfilelist3.sort(), assert_allfilelist3.sort());
+})
+
 test('writeFile', async t => {
     await FileUtil.writeFile(testfile2.file1, 'write string')
     await FileUtil.writeFile(testfile2.file2, { write1: 'Object', write2: 2 })

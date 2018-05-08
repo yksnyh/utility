@@ -98,4 +98,22 @@ test('is', t => {
     t.is(CommonUtil.is('Function', fnc), true)
 })
 
+test('arraySort', t => {
+    const nll = null
+    const str = 'abcd'
+    const array1 = [3, 1, 2]
+    const array2 = [3, 1, 2]
+    const array3 = [3, 1, 2]
 
+    CommonUtil.arraySort(nll, 'asc')
+    CommonUtil.arraySort(str, 'asc')
+    CommonUtil.arraySort(array1)
+    CommonUtil.arraySort(array2, 'asc')
+    CommonUtil.arraySort(array3, 'desc')
+
+    t.is(nll, null)
+    t.is(str, 'abcd')
+    t.deepEqual(array1, [3, 1, 2])
+    t.deepEqual(array2, [1, 2, 3])
+    t.deepEqual(array3, [3, 2, 1])
+})

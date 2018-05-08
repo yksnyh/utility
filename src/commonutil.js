@@ -188,6 +188,23 @@ class CommonUtil {
         return new Promise(resolve => setTimeout(resolve, msec))
     }
 
+    static arraySort(array, sortType) {
+        const compareFunc = (a, b) => {
+            if (sortType === 'asc') {
+                if (a > b) return 1
+                if (a < b) return -1
+            }
+            if (sortType === 'desc') {
+                if (a < b) return 1
+                if (a > b) return -1
+            }
+            return 0
+        };
+        if (CommonUtil.is('Array', array) && (sortType === 'asc' || sortType === 'desc')) {
+            array.sort(compareFunc);
+        }
+    }
+
 }
 
 module.exports = CommonUtil

@@ -148,6 +148,24 @@ class FileUtil {
             await promisify(fs.readFile)(filepath, { encoding: _encoding }) : null;
     }
 
+    static async getAllfiles(dir, sortType) {
+        if (await FileUtil.isFile(dir)) {
+            return [dir];
+        } else if (await FileUtil.isDir(dir)) {
+            const files = await promisify(fs.readdir)(dir);
+            const filepaths = files.map((file) => { return path.join(dir, file) });
+            const all_files_list = await CommonUtil.concurrentExecAsyncFunc(FileUtil.getAllfiles, filepaths);
+            const all_files = [];
+            for (let i = 0; i < all_files_list.length; i++) {
+                Array.prototype.push.apply(all_files, all_files_list[i]);
+            }
+            CommonUtil.arraySort(all_files, sortType);
+            return all_files;
+        } else {
+            throw new Error(`not found ${dir}`);
+        }
+    }
+
     static async writeFile(filepath, data, encoding) {
         const _encoding = encoding || 'utf-8';
         const writeData = (CommonUtil.is('String', data)) ? data : JSON.stringify(data);
